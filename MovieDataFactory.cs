@@ -1,6 +1,50 @@
 public class MovieDataFactory
 {
-  public static List<MovieUploadObject> CreateMovieUploadObjects(string filePath = "")
+
+  public List<MovieUploadObject> CreateListFromReadme(string FilePath)
+  {
+    var list = new List<MovieUploadObject>();
+    MovieUploadObject? bucket = null;
+    foreach (string line in System.IO.File.ReadLines(FilePath))
+    {
+      Console.WriteLine(line);
+      if (line.Contains("##"))
+      {
+        if (bucket != null)
+        {
+          list.Add(bucket);
+        }
+        bucket = new MovieUploadObject { Title = line.Replace("##", "").Trim() };
+      }
+      else if (line.Contains(">"))
+      {
+        // file path 
+        if (bucket != null)
+        {
+          bucket.FilePath = line.Replace(">", "").Trim();
+        }
+      }
+      else if (line.Contains("--"))
+      {
+        if (bucket != null)
+        {
+          var split = line.Split("--");
+          if (bucket.VideoTimeStamps == null)
+          {
+            bucket.VideoTimeStamps = new List<VideoTimeStamp>();
+          }
+          bucket.VideoTimeStamps.Add(new VideoTimeStamp { Description = split[0].Trim(), TimeStamp = split[1].Trim() });
+        }
+      }
+    }
+    if (bucket != null)
+    {
+      list.Add(bucket);
+    }
+    return list;
+  }
+
+  public static List<MovieUploadObject> CreateMovieUploadObjectsDummy(string filePath = "")
   {
     var movieUploadObjects = new List<MovieUploadObject>();
 
