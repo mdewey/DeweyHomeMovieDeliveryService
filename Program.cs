@@ -12,7 +12,7 @@ var sourceFile = @"C:\Users\markt\Desktop\Movie Project\test\README.md";
 var movies = new MovieDataFactory()
     .CreateListFromReadme(sourceFile).ToList();
 
-foreach (var movie in movies)
+Parallel.ForEach(movies, async movie =>
 {
   Console.WriteLine(movie);
   await new MovieToAws(new MovieToAwsConfig
@@ -22,9 +22,5 @@ foreach (var movie in movies)
     AwsBucket = config["HomeMovies:aws:bucket"]
   }).UploadToAws(movie);
   Console.WriteLine(movie);
-}
-
-foreach (var movie in movies)
-{
   await new MovieApi().ProcessMovie(movie);
-}
+});

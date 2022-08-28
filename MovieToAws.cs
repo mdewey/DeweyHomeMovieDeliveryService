@@ -33,7 +33,7 @@ public class MovieToAws
       throw new ArgumentNullException(nameof(movie));
     }
 
-    Console.WriteLine("sending file to AWS");
+    Console.WriteLine($"sending file to AWS");
     var accessKeyID = this.AwsAccessKey;
     var secretAccessKey = this.AwsSecretKey;
     var bucketName = this.AwsBucket;
@@ -41,8 +41,6 @@ public class MovieToAws
     var creds = new BasicAWSCredentials(accessKeyID, secretAccessKey);
     using (var client = new AmazonS3Client(creds, region))
     {
-      Console.WriteLine("Created S3 Client");
-
       Console.WriteLine("sending file to AWS");
       Console.WriteLine(movie);
       using (var ms = new MemoryStream())
