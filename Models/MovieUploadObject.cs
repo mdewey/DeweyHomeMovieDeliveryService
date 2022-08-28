@@ -13,10 +13,12 @@ public class MovieUploadObject
   public string? FileName { get { return Path.GetFileName(FilePath); } }
   public string? Url { get; set; }
 
+  public List<String>? Tags { get; set; }
+
   public List<VideoTimeStamp>? VideoTimeStamps { get; set; } = new List<VideoTimeStamp>();
 
   public override string ToString()
   {
-    return $"{Title} - {Url} - {FilePath}, {VideoTimeStamps?.Count}";
+    return $"{Title} - {Url} - {FilePath}, time stamps {VideoTimeStamps?.Count}, tags {Tags?.Count}";
   }
 }

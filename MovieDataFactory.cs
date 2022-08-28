@@ -24,6 +24,14 @@ public class MovieDataFactory
           bucket.FilePath = line.Replace(">", "").Trim();
         }
       }
+      else if (line.Contains("~~"))
+      {
+        // url
+        if (bucket != null)
+        {
+          bucket.Tags = line.Replace("~~", "").Trim().Split(',').ToList();
+        }
+      }
       else if (line.Contains("--"))
       {
         if (bucket != null)

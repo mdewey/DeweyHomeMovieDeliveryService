@@ -23,3 +23,8 @@ foreach (var movie in movies)
   }).UploadToAws(movie);
   Console.WriteLine(movie);
 }
+
+foreach (var movie in movies)
+{
+  await new MovieApi().ProcessMovie(movie);
+}

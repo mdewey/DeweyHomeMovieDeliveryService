@@ -6,20 +6,14 @@ public class MovieApi
 
   public string MovieApiRoot { get; set; } = "https://localhost:7200/api/movies";
 
-  public Task<string> UploadToAws(MovieUploadObject movie)
-  {
-    Console.WriteLine("sending file to AWS");
-    return Task.FromResult("https://s3.amazonaws.com/movie-api-bucket/movie.mp4");
-  }
 
-  public async Task UploadMetaDataToApi(MovieUploadObject movie, string storageUrl)
+  public async Task UploadMetaDataToApi(MovieUploadObject movie)
   {
     Console.WriteLine("sending meta data to API");
-    movie.Url = storageUrl;
     Console.WriteLine(movie);
     try
     {
-      //TODO: remove before sending to AWS
+      //TODO: remove before sending to production
       var httpClientHandler = new HttpClientHandler();
       httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, sslPolicyErrors) =>
       {
@@ -43,7 +37,6 @@ public class MovieApi
 
   public async Task ProcessMovie(MovieUploadObject movie)
   {
-    var storageUrl = await UploadToAws(movie);
-    await UploadMetaDataToApi(movie, storageUrl);
+    await UploadMetaDataToApi(movie);
   }
 }
