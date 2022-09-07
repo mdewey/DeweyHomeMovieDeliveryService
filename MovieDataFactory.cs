@@ -41,7 +41,7 @@ public class MovieDataFactory
           {
             bucket.VideoTimeStamps = new List<VideoTimeStamp>();
           }
-          bucket.VideoTimeStamps.Add(new VideoTimeStamp { Description = split[0].Trim(), TimeStamp = split[1].Trim() });
+          bucket.VideoTimeStamps.Add(new VideoTimeStamp { Description = split[1].Trim(), TimeStamp = split[0].Trim() });
         }
       }
     }

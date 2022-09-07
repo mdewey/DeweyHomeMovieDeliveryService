@@ -33,7 +33,7 @@ public class MovieToAws
       throw new ArgumentNullException(nameof(movie));
     }
 
-    Console.WriteLine($"sending file to AWS");
+    Console.WriteLine($"staring to upload {movie.FilePath}");
     var accessKeyID = this.AwsAccessKey;
     var secretAccessKey = this.AwsSecretKey;
     var bucketName = this.AwsBucket;
@@ -41,7 +41,7 @@ public class MovieToAws
     var creds = new BasicAWSCredentials(accessKeyID, secretAccessKey);
     using (var client = new AmazonS3Client(creds, region))
     {
-      Console.WriteLine("sending file to AWS");
+      Console.WriteLine("reading file");
       Console.WriteLine(movie);
       using (var ms = new MemoryStream())
       {
@@ -57,8 +57,11 @@ public class MovieToAws
           };
 
           var fileTransferUtility = new TransferUtility(client);
+          Console.WriteLine("uploading file");
           await fileTransferUtility.UploadAsync(uploadRequest);
           movie.Url = $"https://{bucketName}.s3.amazonaws.com/{HttpUtility.UrlEncode(uploadRequest.Key)}";
+          movie.Key = uploadRequest.Key;
+          Console.WriteLine("success!", movie.Url);
         }
       }
     }
