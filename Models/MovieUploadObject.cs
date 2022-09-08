@@ -10,7 +10,7 @@ public class MovieUploadObject
 
   public string? FilePath { get; set; }
 
-  public string? Key { get; set; }
+  public string? AwsKey { get; set; }
 
   public string? FileName { get { return Path.GetFileName(FilePath); } }
   public string? Url { get; set; }

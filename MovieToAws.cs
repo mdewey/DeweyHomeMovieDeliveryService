@@ -60,7 +60,7 @@ public class MovieToAws
           Console.WriteLine("uploading file");
           await fileTransferUtility.UploadAsync(uploadRequest);
           movie.Url = $"https://{bucketName}.s3.amazonaws.com/{HttpUtility.UrlEncode(uploadRequest.Key)}";
-          movie.Key = uploadRequest.Key;
+          movie.AwsKey = uploadRequest.Key;
           Console.WriteLine("success!", movie.Url);
         }
       }
