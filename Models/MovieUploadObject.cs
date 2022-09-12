@@ -15,6 +15,10 @@ public class MovieUploadObject
   public string? FileName { get { return Path.GetFileName(FilePath); } }
   public string? Url { get; set; }
 
+  public string? ImageUrl { get; set; }
+  public string? Length { get; set; }
+
+
   public List<String>? Tags { get; set; }
 
   public List<VideoTimeStamp>? VideoTimeStamps { get; set; } = new List<VideoTimeStamp>();

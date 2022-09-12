@@ -1,6 +1,17 @@
 public class MovieDataFactory
 {
 
+
+  Dictionary<string, string> LINE_MARKERS = new Dictionary<string, string>
+  {
+    ["movieName"] = "##",
+    ["tags"] = "> tags:",
+    ["timeStamps"] = "--",
+    ["imageUrl"] = "> imageUrl:",
+    ["length"] = "> length:",
+    ["filePath"] = "> filePath:",
+  };
+
   public List<MovieUploadObject> CreateListFromReadme(string FilePath)
   {
     var list = new List<MovieUploadObject>();
@@ -8,35 +19,53 @@ public class MovieDataFactory
     foreach (string line in System.IO.File.ReadLines(FilePath))
     {
       Console.WriteLine(line);
-      if (line.Contains("##"))
+      if (line.Contains(LINE_MARKERS["movieName"]))
       {
         if (bucket != null)
         {
           list.Add(bucket);
         }
-        bucket = new MovieUploadObject { Title = line.Replace("##", "").Trim() };
+        bucket = new MovieUploadObject { Title = line.Replace(LINE_MARKERS["movieName"], "").Trim() };
       }
-      else if (line.Contains(">"))
+      else if (line.Contains(LINE_MARKERS["length"]))
+      {
+        if (bucket != null)
+        {
+          bucket.Length = line.Replace(LINE_MARKERS["length"], "").Trim();
+        }
+      }
+      else if (line.Contains(LINE_MARKERS["imageUrl"]))
+      {
+        if (bucket != null)
+        {
+          bucket.ImageUrl = line
+            .Replace(LINE_MARKERS["imageUrl"], "")
+            .Replace(">", "")
+            .Replace("<", "")
+            .Trim();
+        }
+      }
+      else if (line.Contains(LINE_MARKERS["filePath"]))
       {
         // file path 
         if (bucket != null)
         {
-          bucket.FilePath = line.Replace(">", "").Trim();
+          bucket.FilePath = line.Replace(LINE_MARKERS["filePath"], "").Trim();
         }
       }
-      else if (line.Contains("~~"))
+      else if (line.Contains(LINE_MARKERS["tags"]))
       {
         // url
         if (bucket != null)
         {
-          bucket.Tags = line.Replace("~~", "").Trim().Split(',').ToList();
+          bucket.Tags = line.Replace(LINE_MARKERS["tags"], "").Trim().Split(',').ToList();
         }
       }
-      else if (line.Contains("--"))
+      else if (line.Contains(LINE_MARKERS["timeStamps"]))
       {
         if (bucket != null)
         {
-          var split = line.Split("--");
+          var split = line.Split(LINE_MARKERS["timeStamps"]);
           if (bucket.VideoTimeStamps == null)
           {
             bucket.VideoTimeStamps = new List<VideoTimeStamp>();

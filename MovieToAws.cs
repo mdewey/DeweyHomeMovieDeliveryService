@@ -45,6 +45,7 @@ public class MovieToAws
       Console.WriteLine(movie);
       using (var ms = new MemoryStream())
       {
+
         using (FileStream file = new FileStream(movie.FilePath, FileMode.Open, FileAccess.Read))
         {
           file.CopyTo(ms);
