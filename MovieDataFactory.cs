@@ -1,3 +1,7 @@
+using MediaToolkit;
+using MediaToolkit.Model;
+using MediaToolkit.Options;
+
 public class MovieDataFactory
 {
 
@@ -11,6 +15,24 @@ public class MovieDataFactory
     ["length"] = "> length:",
     ["filePath"] = "> filePath:",
   };
+
+  public MovieUploadObject GetThumbnailAndLength(MovieUploadObject movie)
+  {
+    var inputFile = new MediaFile { Filename = movie.FilePath };
+    var outputFile = new MediaFile { Filename = @$"C:\Users\markt\Desktop\movie_project\test\{movie.Title}.jpg" };
+
+    using (var engine = new Engine())
+    {
+      engine.GetMetadata(inputFile);
+      // Saves the frame located on the 15th second of the video.
+      var options = new ConversionOptions { Seek = TimeSpan.FromSeconds(60), };
+      engine.GetThumbnail(inputFile, outputFile, options);
+      movie.ImageUrl = outputFile.Filename;
+      movie.Length = inputFile.Metadata.Duration.ToString();
+    }
+
+    return movie;
+  }
 
   public List<MovieUploadObject> CreateListFromReadme(string FilePath)
   {
@@ -31,18 +53,18 @@ public class MovieDataFactory
       {
         if (bucket != null)
         {
-          bucket.Length = line.Replace(LINE_MARKERS["length"], "").Trim();
+          // bucket.Length = line.Replace(LINE_MARKERS["length"], "").Trim();
         }
       }
       else if (line.Contains(LINE_MARKERS["imageUrl"]))
       {
         if (bucket != null)
         {
-          bucket.ImageUrl = line
-            .Replace(LINE_MARKERS["imageUrl"], "")
-            .Replace(">", "")
-            .Replace("<", "")
-            .Trim();
+          // bucket.ImageUrl = line
+          //   .Replace(LINE_MARKERS["imageUrl"], "")
+          //   .Replace(">", "")
+          //   .Replace("<", "")
+          //   .Trim();
         }
       }
       else if (line.Contains(LINE_MARKERS["filePath"]))

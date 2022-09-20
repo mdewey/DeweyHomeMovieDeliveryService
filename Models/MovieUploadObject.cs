@@ -25,6 +25,6 @@ public class MovieUploadObject
 
   public override string ToString()
   {
-    return $"{Title} - {Url} - {FilePath}, time stamps {VideoTimeStamps?.Count}, tags {Tags?.Count}";
+    return $"{Title} - {Url} - {FilePath}, time stamps {VideoTimeStamps?.Count}, tags {Tags?.Count} - Length: {Length}";
   }
 }
