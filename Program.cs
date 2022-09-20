@@ -8,13 +8,14 @@ var config = new ConfigurationBuilder()
       .AddUserSecrets<Program>()
       .Build();
 
-var sourceFile = @"C:\Users\markt\Desktop\Movie Project\test\README.md";
+var sourceFile = @"C:\Users\markt\Desktop\movie_project\test\README.md";
 var movies = new MovieDataFactory()
     .CreateListFromReadme(sourceFile).ToList();
 
 foreach (var movie in movies)
 {
   Console.WriteLine(movie);
+  new MovieDataFactory().GetThumbnailAndLength(movie);
   await new MovieToAws(new MovieToAwsConfig
   {
     AwsAccessKey = config["HomeMovies:aws:accessKeyId"],

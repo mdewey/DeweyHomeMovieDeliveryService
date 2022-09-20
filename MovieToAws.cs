@@ -28,7 +28,7 @@ public class MovieToAws
 
   public async Task<MovieUploadObject> UploadToAws(MovieUploadObject movie)
   {
-    if (movie == null || movie.FilePath == null)
+    if (movie == null || movie.FilePath == null || movie.ImageUrl == null)
     {
       throw new ArgumentNullException(nameof(movie));
     }
@@ -43,6 +43,30 @@ public class MovieToAws
     {
       Console.WriteLine("reading file");
       Console.WriteLine(movie);
+      // upload sceenshot
+      using (var ms = new MemoryStream())
+      {
+
+        using (FileStream file = new FileStream(movie.ImageUrl, FileMode.Open, FileAccess.Read))
+        {
+          file.CopyTo(ms);
+
+          var uploadRequest = new TransferUtilityUploadRequest
+          {
+            InputStream = ms,
+            Key = movie.FileName?.Replace(".mp4", ".jpg"),
+            BucketName = bucketName // bucket name of S3
+          };
+
+          var fileTransferUtility = new TransferUtility(client);
+          Console.WriteLine("uploading sceenshot");
+          await fileTransferUtility.UploadAsync(uploadRequest);
+          movie.ImageUrl = $"https://{bucketName}.s3.amazonaws.com/{HttpUtility.UrlEncode(uploadRequest.Key)}";
+          movie.AwsImageKey = uploadRequest.Key;
+          Console.WriteLine($"uploaded sceenshot to {movie.ImageUrl}, aws key {movie.AwsImageKey}");
+        }
+      }
+      // upload video
       using (var ms = new MemoryStream())
       {
 
