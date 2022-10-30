@@ -4,7 +4,7 @@ public class MovieApi
 {
   // static readonly HttpClient client = new HttpClient();
 
-  public string MovieApiRoot { get; set; } = "https://localhost:7200/api/movies";
+  public string MovieApiRoot { get; set; } = "https://localhost:7200/api/v2/movies";
 
 
   public async Task UploadMetaDataToApi(MovieUploadObject movie)
