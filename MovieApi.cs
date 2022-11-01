@@ -4,8 +4,17 @@ public class MovieApi
 {
   // static readonly HttpClient client = new HttpClient();
 
-  public string MovieApiRoot { get; set; } = "https://localhost:7200/api/v2/movies";
+  public string MovieApiRoot { get; set; } = "https://dewey-movie-api.azurewebsites.net/api/v2/movies";
 
+
+  public async Task<List<MovieUploadObject>> GetAllMovies()
+  {
+    var client = new HttpClient();
+    var response = await client.GetAsync($"{MovieApiRoot}");
+    var content = await response.Content.ReadAsStringAsync();
+    var movies = JsonSerializer.Deserialize<List<MovieUploadObject>>(content);
+    return movies;
+  }
 
   public async Task UploadMetaDataToApi(MovieUploadObject movie)
   {

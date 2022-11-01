@@ -25,3 +25,9 @@ foreach (var movie in movies)
   Console.WriteLine(movie);
   await new MovieApi().ProcessMovie(movie);
 }
+
+// get all movies and compare to list to see if any are missing
+var moviesFromApi = await new MovieApi().GetAllMovies();
+// write counts to console
+Console.WriteLine($"Movies from api: {moviesFromApi.Count()}");
+Console.WriteLine($"Movies from readme: {movies.Count}");
