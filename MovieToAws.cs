@@ -67,28 +67,24 @@ public class MovieToAws
         }
       }
       // upload video
-      using (var ms = new MemoryStream())
+
+      using (FileStream file = new FileStream(movie.FilePath, FileMode.Open, FileAccess.Read))
       {
-
-        using (FileStream file = new FileStream(movie.FilePath, FileMode.Open, FileAccess.Read))
+        var uploadRequest = new TransferUtilityUploadRequest
         {
-          file.CopyTo(ms);
+          InputStream = file,
+          Key = movie.FileName,
+          BucketName = bucketName // bucket name of S3
+        };
 
-          var uploadRequest = new TransferUtilityUploadRequest
-          {
-            InputStream = ms,
-            Key = movie.FileName,
-            BucketName = bucketName // bucket name of S3
-          };
-
-          var fileTransferUtility = new TransferUtility(client);
-          Console.WriteLine("uploading file");
-          await fileTransferUtility.UploadAsync(uploadRequest);
-          movie.Url = $"https://{bucketName}.s3.amazonaws.com/{HttpUtility.UrlEncode(uploadRequest.Key)}";
-          movie.AwsKey = uploadRequest.Key;
-          Console.WriteLine("success!", movie.Url);
-        }
+        var fileTransferUtility = new TransferUtility(client);
+        Console.WriteLine("uploading file");
+        await fileTransferUtility.UploadAsync(uploadRequest);
+        movie.Url = $"https://{bucketName}.s3.amazonaws.com/{HttpUtility.UrlEncode(uploadRequest.Key)}";
+        movie.AwsKey = uploadRequest.Key;
+        Console.WriteLine("success!", movie.Url);
       }
+
     }
 
     return movie;

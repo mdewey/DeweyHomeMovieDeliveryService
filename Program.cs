@@ -8,7 +8,8 @@ var config = new ConfigurationBuilder()
       .AddUserSecrets<Program>()
       .Build();
 
-var sourceFile = @"C:\Users\markt\Desktop\movie_project\test\README.md";
+// var sourceFile = @"C:\Users\markt\Desktop\movie_project\test\README.md";
+var sourceFile = @"D:\Homemovies\README.md";
 var movies = new MovieDataFactory()
     .CreateListFromReadme(sourceFile).ToList();
 

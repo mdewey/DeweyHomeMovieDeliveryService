@@ -19,7 +19,7 @@ public class MovieDataFactory
   public MovieUploadObject GetThumbnailAndLength(MovieUploadObject movie)
   {
     var inputFile = new MediaFile { Filename = movie.FilePath };
-    var outputFile = new MediaFile { Filename = @$"C:\Users\markt\Desktop\movie_project\test\{movie.Title}.jpg" };
+    var outputFile = new MediaFile { Filename = @$"C:\Users\markt\Desktop\movie_project\test\{movie.FileName}.jpg" };
 
     using (var engine = new Engine())
     {
